@@ -34,9 +34,11 @@ class Utility(private val channelName: String) {
     fun getMediaInfoJson(context: Context, path: String): JSONObject {
         val file = File(path)
         val retriever = MediaMetadataRetriever()
-
-        retriever.setDataSource(context, Uri.fromFile(file))
-
+        try {
+            retriever.setDataSource(context, Uri.fromFile(file))
+        } catch(e:IllegalArgumentException){
+            null
+        }
         val durationStr = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
         val title = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE) ?: ""
         val author = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_AUTHOR) ?: ""
